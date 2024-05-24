@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home page</title>
+    <style>
+        .custom-button {
+            display: inline-block;
+            background-image: linear-gradient(to right, #aaaaaa, #8a8a8a);
+            color: white;
+            padding: 6px 12px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-image 0.3s ease;
+            font-size: 18px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .custom-button:hover {
+            background-image: linear-gradient(to right, #838383, #dfdfdf);
+        }
+
+        .custom-button:active {
+            transform: scale(0.95);
+        }
+
+        @media (max-width: 600px) {
+            .custom-button {
+                padding: 8px 16px;
+                font-size: 16px;
+            }
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        h2 {
+            margin-top: 0;
+        }
+    </style>
+</head>
+<body>
+<div style="text-align:left; display: flex; gap: 12px">
+    <a th:href="@{/login}">
+        <button class="custom-button">Sign in</button>
+    </a>
+    <a th:href="@{/registration}">
+        <button class="custom-button">Sign up</button>
+    </a>
+</div>
+
+</body>
+</html>
