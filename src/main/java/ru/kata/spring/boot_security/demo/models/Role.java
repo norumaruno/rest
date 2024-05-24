@@ -38,6 +38,11 @@ public class Role implements GrantedAuthority {
     public void setName(String name) {
         this.name = name;
     }
+    
+    @Override
+    public String getAuthority() {
+        return getName();
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -57,8 +62,4 @@ public class Role implements GrantedAuthority {
         return name.substring("ROLE_".length());
     }
 
-    @Override
-    public String getAuthority() {
-        return getName();
-    }
 }
