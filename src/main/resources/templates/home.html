@@ -10,12 +10,14 @@
             color: white;
             padding: 6px 12px;
             border: none;
-            border-radius: 10px;
+            border-radius: 50px;
             cursor: pointer;
             transition: background-image 0.3s ease;
-            font-size: 18px;
+            font-size: 72px;
             font-weight: bold;
             text-transform: uppercase;
+            height: 30vh;
+            width: 30vw;
         }
 
         .custom-button:hover {
@@ -41,15 +43,34 @@
         h2 {
             margin-top: 0;
         }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; /* Задаем высоту контейнера равной высоте окна просмотра */
+        }
+
+        .centered-button {
+            padding: 20px 40px; /* Размеры кнопки */
+            font-size: 24px; /* Размер текста кнопки */
+            background-color: #007bff; /* Фон кнопки */
+            color: white; /* Текст кнопки */
+            border: none; /* Отключаем границу */
+            cursor: pointer; /* Изменяем курсор на указатель */
+            transition: background-color 0.3s ease; /* Анимация изменения фона */
+        }
+
+        .centered-button:hover {
+            background-color: #0056b3; /* Темнее фон при наведении */
+        }
     </style>
+
 </head>
 <body>
-<div style="text-align:left; display: flex; gap: 12px">
+<div class="container" style="text-align:left; display: flex; gap: 12px">
     <a th:href="@{/login}">
         <button class="custom-button">Sign in</button>
-    </a>
-    <a th:href="@{/registration}">
-        <button class="custom-button">Sign up</button>
     </a>
 </div>
 

@@ -1,22 +1,20 @@
 package ru.kata.spring.boot_security.demo.controllers;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.service.AdminService;
-import ru.kata.spring.boot_security.demo.service.RegistrationService;
 
 @Controller
 @RequestMapping("/admin")
 public class AdminsController {
 
-
-    private final RegistrationService registrationService;
     private final AdminService adminService;
 
-    public AdminsController(RegistrationService registrationService, AdminService adminService) {
-        this.registrationService = registrationService;
+    @Autowired
+    public AdminsController(AdminService adminService) {
         this.adminService = adminService;
     }
 
@@ -50,7 +48,7 @@ public class AdminsController {
     @PostMapping("/users")
     public String saveUser(@ModelAttribute("user") User user, Model model) {
         if (adminService.isValidUsername(user)) {
-            registrationService.register(user);
+            adminService.save(user);
 
             return "redirect:/admin/users";
         }
@@ -76,7 +74,7 @@ public class AdminsController {
             return "/admin/edit";
         }
 
-        registrationService.register(user);
+        adminService.save(user);
 
         return "redirect:/admin/profile?username=" + user.getUsername();
     }

@@ -7,22 +7,22 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import ru.kata.spring.boot_security.demo.models.User;
-import ru.kata.spring.boot_security.demo.service.AdminService;
+import ru.kata.spring.boot_security.demo.service.UserService;
 
 @Controller
 public class UsersController {
 
-    private final AdminService adminService;
+    private final UserService userService;
 
     @Autowired
-    public UsersController(AdminService adminService) {
-        this.adminService = adminService;
+    public UsersController(UserService userService) {
+        this.userService = userService;
     }
 
     @GetMapping("/user")
     public String getProfile(@AuthenticationPrincipal UserDetails userDetails, Model model) {
         String username = userDetails.getUsername();
-        User user = adminService.findByUsername(username);
+        User user = userService.findByUsername(username);
         model.addAttribute("user", user);
         return "users/profile";
     }
