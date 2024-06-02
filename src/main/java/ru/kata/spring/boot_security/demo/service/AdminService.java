@@ -15,7 +15,5 @@ public interface AdminService extends UserDetailsService {
 
     List<Role> getRoles();
 
-    boolean isValidUsername(User user);
-
     void save(User user);
 }

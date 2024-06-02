@@ -1,6 +1,7 @@
 package ru.kata.spring.boot_security.demo.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -19,70 +20,33 @@ public class AdminsController {
     }
 
     @GetMapping()
-    public String admin() {
+    public String admin(Model model, Authentication auth) {
+        User currentUser = adminService.findByUsername(auth.getName());
+        model.addAttribute("currentUser", currentUser);
+        model.addAttribute("newUser", new User());
+        model.addAttribute("allRoles", adminService.getRoles());
+        model.addAttribute("allUsers", adminService.findAll());
         return "/admin/admin";
     }
 
-    @GetMapping("/users")
-    public String getAllUsers(Model model) {
-        model.addAttribute("users", adminService.findAll());
+    @PostMapping("/create")
+    public String newUser(@ModelAttribute User user) {
+        adminService.save(user);
 
-        return "/admin/users";
-    }
-
-    @GetMapping("/profile")
-    public String getProfile(@RequestParam(name = "username") String username, Model model) {
-        model.addAttribute("user", adminService.findByUsername(username));
-
-        return "admin/profile";
-    }
-
-    @GetMapping("/create")
-    public String newUser(Model model) {
-        model.addAttribute("user", new User());
-        model.addAttribute("roles", adminService.getRoles());
-
-        return "/admin/create";
-    }
-
-    @PostMapping("/users")
-    public String saveUser(@ModelAttribute("user") User user, Model model) {
-        if (adminService.isValidUsername(user)) {
-            adminService.save(user);
-
-            return "redirect:/admin/users";
-        }
-
-        model.addAttribute("error", "Invalid username");
-
-        return "/admin/create";
-    }
-
-    @GetMapping("/edit")
-    public String editUser(@RequestParam(name = "username") String username, Model model) {
-        model.addAttribute("user", adminService.findByUsername(username));
-        model.addAttribute("roles", adminService.getRoles());
-
-        return "/admin/edit";
+        return "redirect:/admin";
     }
 
     @PatchMapping("/edit")
-    public String updateUser(@ModelAttribute("user") User user, Model model) {
-        if (user.getUsername().isEmpty()) {
-            model.addAttribute("error", "Invalid username");
-
-            return "/admin/edit";
-        }
-
+    public String updateUser(@ModelAttribute("user") User user) {
         adminService.save(user);
 
-        return "redirect:/admin/profile?username=" + user.getUsername();
+        return "redirect:/admin";
     }
 
-    @DeleteMapping("/delete")
+    @PostMapping("/delete")
     public String deleteUser(@RequestParam(name = "username") String username) {
         adminService.delete(username);
 
-        return "redirect:/admin/users";
+        return "redirect:/admin";
     }
 }

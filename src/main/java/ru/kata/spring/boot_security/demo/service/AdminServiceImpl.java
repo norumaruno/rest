@@ -68,12 +68,6 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    @Transactional(readOnly = true)
-    public boolean isValidUsername(User user) {
-        return !(user.getUsername().isEmpty() || usersRepository.existsByUsername(user.getUsername()));
-    }
-
-    @Override
     @Transactional
     public void save(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
