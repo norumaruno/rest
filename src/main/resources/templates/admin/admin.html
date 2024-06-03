@@ -199,7 +199,7 @@
                                                         </div>
                                                         <form class="offset-1 col-10"
                                                               th:method="PATCH"
-                                                              th:action="@{/admin/edit}"
+                                                              th:action="@{/edit}"
                                                               th:object="${newUser}"
                                                         >
 
@@ -295,17 +295,17 @@
                                                                            required
                                                                     />
                                                                 </div>
-
-                                                                <label class="font-weight-bold"
-                                                                >role:</label>
-                                                                <th:block
-                                                                        th:each="role: ${allRoles}">
-                                                                    <input class="form-check-input"
-                                                                           type="checkbox"
-                                                                           th:field="*{roles}"
-                                                                           th:text="${' '+role.name.substring(5)+' '}"
-                                                                           th:value="${role.id}"/>
-                                                                </th:block>
+                                                                <div class="d-flex flex-column mb-3">
+                                                                    <label class="col-form-label font-weight-bold"
+                                                                    >role:</label>
+                                                                    <select size="2" multiple class="form-select"
+                                                                            th:field="*{roles}">
+                                                                        <th:block th:each="role : ${allRoles}">
+                                                                            <option th:value="${role.id}"
+                                                                                    th:text="${' ' + role.name.substring(5)}"></option>
+                                                                        </th:block>
+                                                                    </select>
+                                                                </div>
                                                             </div>
                                                             <div class="modal-footer justify-content-md-end">
                                                                 <button type="button"
@@ -354,7 +354,7 @@
                                                         </div>
                                                         <form class="offset-1 col-10"
                                                               th:method="POST"
-                                                              th:action="@{/admin/delete(username=${user.getUsername()})}"
+                                                              th:action="@{/delete(username=${user.getUsername()})}"
                                                               th:object="${user.username}">
                                                             <div class="modal-body">
                                                                 <div class="mb-3">
@@ -469,7 +469,7 @@
                                 <div class="card-body text-center fw-bold">
                                     <form class="offset-4 col-4"
                                           th:method="POST"
-                                          th:action="@{/admin/create}"
+                                          th:action="@{/create}"
                                           th:object="${newUser}">
 
                                         <label class="font-weight-bold"
@@ -546,17 +546,16 @@
                                                maxlength="64"
                                                required
                                         /><br>
-
-                                        <label class="font-weight-bold"
-                                        >role:</label>
-                                        <th:block th:each="role: ${allRoles}">
-                                            <input class="form-check-input"
-                                                   type="checkbox"
-                                                   th:field="*{roles}"
-                                                   th:text="${' '+role.name.substring(5)+' '}"
-                                                   th:value="${role.id}"/>
-                                        </th:block>
-
+                                        <div class="d-flex flex-column mb-3">
+                                            <label class="col-form-label font-weight-bold"
+                                            >role:</label>
+                                            <select size="2" multiple class="form-select" th:field="*{roles}">
+                                                <th:block th:each="role : ${allRoles}">
+                                                    <option th:value="${role.id}"
+                                                            th:text="${' ' + role.name.substring(5)}"></option>
+                                                </th:block>
+                                            </select>
+                                        </div>
                                         <br/><br/>
                                         <div class="modal-footer justify-content-evenly">
                                             <button type="submit"

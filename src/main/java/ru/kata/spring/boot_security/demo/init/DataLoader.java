@@ -6,36 +6,36 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
-import ru.kata.spring.boot_security.demo.repository.RolesRepository;
-import ru.kata.spring.boot_security.demo.repository.UsersRepository;
+import ru.kata.spring.boot_security.demo.repository.RoleRepository;
+import ru.kata.spring.boot_security.demo.repository.UserRepository;
 
 import java.util.HashSet;
 
 @Component
 public class DataLoader implements CommandLineRunner {
-    private final UsersRepository usersRepository;
-    private final RolesRepository rolesRepository;
+    private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public DataLoader(UsersRepository usersRepository, RolesRepository rolesRepository, PasswordEncoder passwordEncoder) {
-        this.usersRepository = usersRepository;
-        this.rolesRepository = rolesRepository;
+    public DataLoader(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     public void run(String... args) throws Exception {
-        rolesRepository.save(new Role("ROLE_USER"));
-        rolesRepository.save(new Role("ROLE_ADMIN"));
+        roleRepository.save(new Role("ROLE_USER"));
+        roleRepository.save(new Role("ROLE_ADMIN"));
 
         User admin = new User("admin", passwordEncoder.encode("admin"), "adminic", "adminov", "admin@gmail.com", 30);
-        admin.setRoles(new HashSet<>(rolesRepository.findAll()));
+        admin.setRoles(new HashSet<>(roleRepository.findAll()));
 
         User user = new User("user", passwordEncoder.encode("user"), "useric", "userov", "user@gmail.com", 25);
-        user.addRole(rolesRepository.findByName("ROLE_USER"));
+        user.addRole(roleRepository.findByName("ROLE_USER"));
 
-        usersRepository.save(admin);
-        usersRepository.save(user);
+        userRepository.save(admin);
+        userRepository.save(user);
     }
 }
