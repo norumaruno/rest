@@ -329,7 +329,6 @@ const init = async () => {
                     renderUserData()
                 });
             })
-
         }
 
         if (isFirstRender) {
