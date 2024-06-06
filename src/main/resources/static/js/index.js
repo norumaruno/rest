@@ -215,7 +215,7 @@ const init = async () => {
 
                 const editButton = modals.querySelector(`#edit-submit-${item.id}`);
 
-                editButton.addEventListener('click', (event) => {
+                editButton.addEventListener('click', () => {
                     const form = document.forms[`edit-form-${item.id}`]
                     const body = {
                         id: item.id,
@@ -235,7 +235,7 @@ const init = async () => {
                         },
                         method: 'PATCH',
                         body: JSON.stringify((body)),
-                    }).then(async (res) => {
+                    }).then(async () => {
                         context.users = await fetch(`${api}/admin/users`).then((res) => res.json())
                         renderUserData()
                     });
@@ -294,13 +294,8 @@ const init = async () => {
 
                 const deleteButton = modals.querySelector(`#delete-submit-${item.id}`);
 
-                deleteButton.addEventListener('click', (event) => {
-                    const form = document.forms[`delete-form-${item.id}`]
-                    const body = {
-                        name: item.username
-                    }
-
-                    fetch(`${api}/admin/users?username=${item.username}`, {method: 'DELETE'}).then(async (res) => {
+                deleteButton.addEventListener('click', () => {
+                    fetch(`${api}/admin/users?username=${item.username}`, {method: 'DELETE'}).then(async () => {
                         context.users = await fetch(`${api}/admin/users`).then((res) => res.json())
                         renderUserData()
                     });
@@ -309,7 +304,7 @@ const init = async () => {
 
             const createButtons = document.querySelector(`#create-submit`);
 
-            createButtons.addEventListener('click', (event) => {
+            createButtons.addEventListener('click', () => {
                 const form = document.forms[`create-form`]
                 const body = {
                     surname: form.surname.value,
@@ -328,7 +323,7 @@ const init = async () => {
                     },
                     method: 'POST',
                     body: JSON.stringify((body)),
-                }).then(async (res) => {
+                }).then(async () => {
                     context.users = await fetch(`${api}/admin/users`).then((res) => res.json())
                     userTableTab.click()
                     renderUserData()
