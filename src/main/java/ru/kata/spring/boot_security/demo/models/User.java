@@ -14,13 +14,13 @@ public class User implements UserDetails {
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @Column(unique = true, nullable = false, length = 30)
     @NotNull
     private String username;
 
-    @Column(nullable = false)
+    @Column
     private String password;
 
     private String name;
@@ -43,7 +43,7 @@ public class User implements UserDetails {
     public User() {
     }
 
-    public User(int id, String username, String password, String name, String surname, String email, int age) {
+    public User(Long id, String username, String password, String name, String surname, String email, int age) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -62,11 +62,11 @@ public class User implements UserDetails {
         this.age = age;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

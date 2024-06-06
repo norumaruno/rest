@@ -2,14 +2,16 @@ package ru.kata.spring.boot_security.demo.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
-@Controller
+import java.util.List;
+
+@RestController
+@RequestMapping("/api")
 public class UserController {
 
     private final UserService userService;
@@ -21,43 +23,39 @@ public class UserController {
         this.rolesService = rolesService;
     }
 
-    @GetMapping("/admin")
-    public String admin(Model model, Authentication auth) {
-        User currentUser = userService.findByUsername(auth.getName());
-        model.addAttribute("currentUser", currentUser);
-        model.addAttribute("newUser", new User());
-        model.addAttribute("allRoles", rolesService.getRoles());
-        model.addAttribute("allUsers", userService.findAll());
-
-        return "/admin/admin";
+    @GetMapping("/admin/users")
+    public List<User> getAllUsers() {
+        return userService.findAll();
     }
 
-    @PostMapping("/create")
-    public String newUser(@ModelAttribute User user) {
+    @GetMapping("/admin/roles")
+    public List<Role> getAllRoles() {
+        return rolesService.getRoles();
+    }
+
+    @PostMapping("/admin/users")
+    public User newUser(@RequestBody User user) {
         userService.save(user);
 
-        return "redirect:/admin";
+        return user;
     }
 
-    @PatchMapping("/edit")
-    public String updateUser(@ModelAttribute("user") User user) {
-        userService.save(user);
+    @PatchMapping("/admin/users")
+    public User updateUser(@RequestBody User user) {
+        userService.update(user);
 
-        return "redirect:/admin";
+        return user;
     }
 
-    @PostMapping("/delete")
-    public String deleteUser(@RequestParam(name = "username") String username) {
+    @DeleteMapping("/admin/users")
+    public void deleteUser(@RequestParam(name = "username") String username) {
         userService.delete(username);
 
-        return "redirect:/admin";
+        System.out.println("user " + username + " deleted");
     }
 
     @GetMapping("/user")
-    public String getProfile(@ModelAttribute("user") User user, Authentication auth, Model model) {
-        User currentUser = userService.findByUsername(auth.getName());
-        model.addAttribute("currentUser", currentUser);
-
-        return "/users/profile";
+    public User getUser(Authentication auth) {
+        return userService.findByUsername(auth.getName());
     }
 }
